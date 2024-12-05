@@ -14,21 +14,29 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -92,8 +100,8 @@ fun UdpDataList(udpDataList: List<UdpData>) {
     }
 }
 
-@Composable
 
+@Composable
 fun UdpDataCard(data: UdpData) {
     Card(
         modifier = Modifier
@@ -106,9 +114,8 @@ fun UdpDataCard(data: UdpData) {
                 .padding(16.dp)
                 .background(Color.White, RoundedCornerShape(12.dp))
         ) {
-
             Image(
-                painter = rememberAsyncImagePainter(data.imageUrl),
+                painter = rememberAsyncImagePainter(data.ImageUrl),
                 contentDescription = "",
                 modifier = Modifier
                     .size(80.dp)
@@ -117,8 +124,6 @@ fun UdpDataCard(data: UdpData) {
                 contentScale = ContentScale.Inside
             )
             Spacer(modifier = Modifier.width(16.dp))
-
-            // Text Information Section
             Column {
                 Text(
                     text = "Name: ${data.firstname}",
@@ -148,8 +153,44 @@ fun UdpDataCard(data: UdpData) {
                     text = "Humidity: ${data.humidity}%",
                     style = TextStyle(fontSize = 16.sp, color = Color.Black)
                 )
+                Column() {
+                    Button(
+                        modifier = Modifier
+                            .offset(-100.dp, 50.dp)
+                            .width(100.dp)
+                            .height(50.dp),
+                        onClick = { /* Handle Edit */ },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF17A2B8), // Info Blue
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = "Edit",
+                        )
+                    }
+                    Button(
+                        modifier = Modifier
+                            .offset(40.dp, 1.dp)
+                            .width(100.dp)
+                            .height(50.dp),
+                      onClick = {},
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFDC3545), // Danger Red
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = "Delete",
+                        )
+                    }
+                }
+
             }
         }
     }
 }
+
 

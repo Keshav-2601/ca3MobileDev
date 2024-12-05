@@ -1,8 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
-// Required for Room annotation processing
 }
 
 android {
@@ -56,11 +54,11 @@ android {
         }
     }
 
-    kapt { // Enable Room schema export
-        arguments {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
-    }
+//    kapt { // Enable Room schema export
+//        arguments {
+//            arg("room.schemaLocation", "$projectDir/schemas")
+//        }
+//    }
 }
 
 dependencies {
@@ -87,6 +85,6 @@ dependencies {
         implementation("io.coil-kt:coil-compose:2.4.0")
 
 
-       annotationProcessor ("androidx.room:room-compiler:2.5.2")
-       kapt ("androidx.room:room-compiler:2.5.2") // For Kotlin projects
+//       ksp("androidx.room:room-compiler:2.5.0")
+
 }
