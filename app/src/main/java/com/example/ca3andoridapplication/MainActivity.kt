@@ -4,11 +4,6 @@ package com.example.ca3andoridapplication
 //import RoomDB
 //import RoomDao
 //import RoomDatabaseClass
-import android.annotation.SuppressLint
-import android.app.ActionBar.OnNavigationListener
-import android.content.Context
-import android.content.Intent
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -21,13 +16,10 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 //import androidx.compose.foundation.layout.FlowRowScopeInstance.align
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,16 +28,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -57,23 +45,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
-import com.example.ca3andoridapplication.ui.theme.Ca3AndoridApplicationTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.ActorScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.Route
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,8 +63,8 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun ResidentDetail(onNavigate:()->Unit) {
-    var username by remember { mutableStateOf("") }
+fun ResidentDetail(onNavigate:(String,String)->Unit) {
+    var useremail by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     // Background with custom color
@@ -153,8 +129,8 @@ fun ResidentDetail(onNavigate:()->Unit) {
             }
             // Email Field
             TextField(
-                value = username,
-                onValueChange = { username = it },
+                value = useremail,
+                onValueChange = { useremail = it },
                 shape = RoundedCornerShape(30.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -189,7 +165,7 @@ fun ResidentDetail(onNavigate:()->Unit) {
 
 
             Button(
-                onClick = { onNavigate() },
+                onClick = { onNavigate(useremail,password) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -208,16 +184,27 @@ fun ResidentDetail(onNavigate:()->Unit) {
 
 @Composable
 fun navigation(){
-    val naviagtion= rememberNavController()
-    NavHost(navController = naviagtion, startDestination = "ResidentDetail"){
-        composable("ResidentDetail") {
-            ResidentDetail(onNavigate = { naviagtion.navigate("Next") })
+    var context= LocalContext.current
+        val naviagtion = rememberNavController()
+        NavHost(navController = naviagtion, startDestination = "ResidentDetail") {
+            composable("ResidentDetail") {
+                ResidentDetail(onNavigate = { useremail,password->
+                    if(useremail=="Keshavv857@gmail.com" && password=="Keshavverma@26") {
+                        naviagtion.navigate("Next")
+                    }
+                    else{
+                        Toast.makeText(context, "Invalid Credential", Toast.LENGTH_LONG).show()
+                    }
+                })
+            }
+            composable("Next") {
+                MainScreen()
+            }
         }
-        composable("Next"){
-            MainScreen()
-        }
-    }
 }
+
+
+
 
 //@Composable
 //fun navigation() {
