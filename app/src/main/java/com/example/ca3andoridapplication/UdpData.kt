@@ -8,5 +8,6 @@ data class UdpData(
     val priority: String?,
     val preferedTemperature: String?,
     val preferedHumidity: String?,
-    val ImageUrl:String
+    val ImageUrl:String,
+   @SerializedName("_id") val Id:String
 )

@@ -17,4 +17,19 @@ object ReprofitInstance {
             .build()
             .create(ApiService::class.java)
     }
+    val ApiServiceDelete:ApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(ApiService::class.java)
+    }
+    val ApiServiceAdd:ApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(ApiService::class.java)
+    }
+
 }

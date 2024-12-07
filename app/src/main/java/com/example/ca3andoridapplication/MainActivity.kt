@@ -13,11 +13,13 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -51,6 +53,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -102,6 +105,24 @@ fun ResidentDetail(onNavigate:()->Unit) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+                val rotation by rememberInfiniteTransition().animateFloat(
+                    initialValue = 0f,
+                    targetValue = 360f,
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(durationMillis = 2000, easing = LinearEasing)
+                    )
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.spinner), // Replace with your fan image resource
+                    contentDescription = "Rotating Fan",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .graphicsLayer {
+                            rotationZ = rotation
+                        }
+                )
+
             Column()
             {
                 val alpha by rememberInfiniteTransition().animateFloat(
@@ -125,7 +146,8 @@ fun ResidentDetail(onNavigate:()->Unit) {
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xFF757575), // Gray color
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 24.dp)
+                    modifier = Modifier
+                        .padding(bottom = 24.dp)
                         .alpha(alpha)
                 )
             }
@@ -192,7 +214,7 @@ fun navigation(){
             ResidentDetail(onNavigate = { naviagtion.navigate("Next") })
         }
         composable("Next"){
-            GetUDPDataScreen()
+            MainScreen()
         }
     }
 }
